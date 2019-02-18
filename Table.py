@@ -1,4 +1,4 @@
-import Row
+from Row import Row
 
 
 class Table:
@@ -23,6 +23,6 @@ class Table:
 
         for child in xmlnode:
             if child.tag == 'coverage':
-                self.rowlist.append(Row.Row(child))
+                self.rowlist.append(Row(child))
 
 

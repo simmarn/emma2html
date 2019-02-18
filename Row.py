@@ -10,6 +10,5 @@ class Row:
         Parameters
         ----------
         xmlnode :   Element
-                    xml node for row
         """
         self.xmlnode = xmlnode

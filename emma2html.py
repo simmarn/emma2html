@@ -3,7 +3,8 @@
 import getopt
 import sys
 import xml.etree.ElementTree
-import CoverageDocument
+
+from CoverageDocument import CoverageDocument
 
 """
 emma2html.py
@@ -50,7 +51,7 @@ def main():
         xmldoc = xml.etree.ElementTree.parse(inputfile)
 
     # Parse xml file
-    maindoc = CoverageDocument.CoverageDocument(xmldoc.getroot(), "index")
+    maindoc = CoverageDocument(xmldoc.getroot(), "index")
     sys.exit()
 
 
