@@ -4,7 +4,7 @@ import getopt
 import sys
 import xml.etree.ElementTree
 
-from CoverageDocument import CoverageDocument
+from document import CoverageDocument
 
 """
 emma2html.py

@@ -1,6 +1,6 @@
 import datetime
 
-from Table import Table
+from table import Table
 
 
 class CoverageDocument:
