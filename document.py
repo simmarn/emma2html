@@ -100,7 +100,7 @@ class CoverageDocument:
         header.append("       </style>\n")
         header.append("   </head>\n")
         header.append("   <body>\n")
-        header.append("       <h1>" + h1 + "</h1>\n")
+        header.append("        <h1>" + h1 + "</h1>\n")
 
         return header
 
@@ -111,7 +111,7 @@ class CoverageDocument:
         now = str(datetime.datetime.now()).split('.')[0]
 
         footer = list()
-        footer.append("   <p><i>Created by emma2html at " + now + "</i></p>\n")
+        footer.append("       <p><i>Created by emma2html at " + now + "</i></p>\n")
         footer.append("   </body>\n")
         footer.append("</html>")
 

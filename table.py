@@ -31,6 +31,7 @@ class Table:
         """
         content = list()
         
+        content.append("       <p>" + self.xmlnode.tag + " " + str(self.xmlnode.get('name')) + "</p>\n")
         content.append("       <table style==\"width:100%\">\n")
         content.append("          <tr>\n")
         #content.append("            <th>header1</th>\n")
@@ -40,6 +41,6 @@ class Table:
             content.append("            " + row.get_html())
             
         content.append("          </tr>\n")
-        content.append("        </table>\n")
+        content.append("       </table>\n")
         
         return content
