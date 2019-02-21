@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+import os
 import getopt
 import sys
 import xml.etree.ElementTree
@@ -52,6 +53,15 @@ def main():
 
     # Parse xml file
     maindoc = CoverageDocument(xmldoc.getroot(), "index")
+    
+    # create directory
+    report_dir = os.path.join(os.getcwd(), maindoc.filepath)
+    if not os.path.exists(report_dir):
+        os.makedirs(report_dir)
+    
+    # create html docs
+    maindoc.write_file()
+    
     sys.exit()
 
 

@@ -1,4 +1,5 @@
 import datetime
+import os
 
 from table import Table
 
@@ -7,7 +8,8 @@ class CoverageDocument:
     """
     Parse xml and create html page
     """
-
+    filepath = "CoverageReport"
+    
     def __init__(self, root, name):
         """
         Constructor. Parses xml and creates tables or sub documents
@@ -36,19 +38,46 @@ class CoverageDocument:
                     docroot = child[0]
 
         for child in docroot:
-            if child.tag == 'all':
+            if (child.tag == 'all') or\
+                (child.tag == 'method'):
                 newtable = Table(child)
                 self.tables.append(newtable)
             elif (child.tag == 'package') or\
                     (child.tag == 'srcfile') or\
-                    (child.tag == 'class') or\
-                    (child.tag == 'method'):
+                    (child.tag == 'class'):
                 newtable = Table(child, CoverageDocument(child, child.get('name')))
                 self.tables.append(newtable)
 
         print(docroot.tag + " " + name)
 
-    @property
+    def write_file(self):
+        """
+        Write html file to disk
+        """
+        filename = os.path.join(self.filepath, self.name + ".html")
+        
+        content = self.get_content()
+        
+        file = open(filename, 'w')
+        
+        for row in content:
+            file.write(row)
+           
+        file.close()
+        
+    def get_content(self):
+        """
+        Get file content and return as a list of rows 
+        """
+        content = self.get_header()
+        
+        for table in self.tables:
+            content = content + table.get_html()
+        
+        content = content + self.get_footer()
+        
+        return content
+        
     def get_header(self):
         """
         Create html document header
@@ -59,14 +88,22 @@ class CoverageDocument:
             h1 = self.root.tag + " " + self.name
 
         header = list()
-        header.append("<html>")
-        header.append("   <head><title>Code Coverage Report - " + self.root.tag + " " + self.name + "</title></head>")
-        header.append("   <body>")
-        header.append("       <h1>" + h1 + "</h1>")
+        header.append("<html>\n")
+        header.append("   <head>\n")
+        header.append("       <title>Code Coverage Report - " + self.root.tag + " " + self.name + "</title>\n")
+        header.append("       <style>\n")
+        header.append("       table, th, td {\n")
+        header.append("         border: 1px solid black;\n")
+        header.append("         border-collapse: collapse;\n")
+        header.append("         padding: 5px;\n")
+        header.append("         }\n")
+        header.append("       </style>\n")
+        header.append("   </head>\n")
+        header.append("   <body>\n")
+        header.append("       <h1>" + h1 + "</h1>\n")
 
         return header
 
-    @property
     def get_footer(self):
         """
         Create html document footer
@@ -74,8 +111,8 @@ class CoverageDocument:
         now = str(datetime.datetime.now()).split('.')[0]
 
         footer = list()
-        footer.append("   <p><i>Created by emma2html at " + now + "</i></p>")
-        footer.append("   </body>")
+        footer.append("   <p><i>Created by emma2html at " + now + "</i></p>\n")
+        footer.append("   </body>\n")
         footer.append("</html>")
 
         return footer
