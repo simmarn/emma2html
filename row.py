@@ -1,3 +1,5 @@
+import thresholds
+
 class Row:
     """
     Parse xml and create html table
@@ -22,5 +24,19 @@ class Row:
         """
         Get html for coverage row
         """
-        return "<tr><td>" + self.xmlnode.get('type') + "</td><td>" + format(self.percentage, '.2f')\
-               + "</td><td>" + self.quotient + "</td></tr>\n"
+        return "<tr bgcolor=\"" + self.get_bgcolor() + "\"><td>" + self.xmlnode.get('type') + "</td><td>"\
+               + self.format_percentage() + "</td><td>" + self.quotient + "</td></tr>\n"
+
+    def format_percentage(self):
+        if self.percentage == 100:
+            return "100"
+        else:
+            return format(self.percentage, '.2f')
+
+    def get_bgcolor(self):
+        cov_type = self.xmlnode.get('type')[:-3]
+        if self.percentage > thresholds.get_threshold(cov_type):
+            return "green"
+        else:
+            return "red"
+
