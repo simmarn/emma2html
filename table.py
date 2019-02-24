@@ -30,8 +30,9 @@ class Table:
         Get html for coverage table
         """
         content = list()
-        
-        content.append("       <p><table style==\"width:100%\">\n")
+
+        content.append("       <p><table style=\"width:600px;table-layout:fixed\">\n")
+        #content.append("       <p><table style=\"width:100%\">\n")
         content.append("          <tr>\n")
         content.append("            <th colspan=3>" + self.get_header() + "</th>\n")
         content.append("          </tr>\n")

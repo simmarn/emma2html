@@ -93,6 +93,7 @@ class CoverageDocument:
         header.append("       <title>Code Coverage Report - " + self.root.tag + " " + self.name + "</title>\n")
         header.append("       <style>\n")
         header.append("       table, th, td {\n")
+        header.append("         font-size: 95%;\n")
         header.append("         border: 1px solid black;\n")
         header.append("         border-collapse: collapse;\n")
         header.append("         padding: 5px;\n")

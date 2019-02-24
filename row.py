@@ -29,9 +29,9 @@ class Row:
 
     def format_percentage(self):
         if self.percentage == 100:
-            return "100"
+            return "100%"
         else:
-            return format(self.percentage, '.2f')
+            return format(self.percentage, '.2f') + "%"
 
     def get_bgcolor(self):
         cov_type = self.xmlnode.get('type')[:-3]
