@@ -31,16 +31,21 @@ class Table:
         """
         content = list()
         
-        content.append("       <p>" + self.xmlnode.tag + " " + str(self.xmlnode.get('name')) + "</p>\n")
-        content.append("       <table style==\"width:100%\">\n")
+        content.append("       <p><table style==\"width:100%\">\n")
         content.append("          <tr>\n")
-        #content.append("            <th>header1</th>\n")
-        #content.append("            <th>header2</th>\n")
+        content.append("            <th colspan=3>" + self.get_header() + "</th>\n")
+        content.append("          </tr>\n")
         
         for row in self.rowlist:
             content.append("            " + row.get_html())
             
         content.append("          </tr>\n")
-        content.append("       </table>\n")
+        content.append("       </table></p>\n")
         
         return content
+
+    def get_header(self):
+        if (self.xmlnode.tag == "all"):
+            return str(self.xmlnode.get('name'))
+        else:
+            return self.xmlnode.tag + " " + str(self.xmlnode.get('name'))

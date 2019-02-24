@@ -29,10 +29,10 @@ class CoverageDocument:
 
         if root.tag == 'report':
             for child in root:
-                if child.tag == 'stats':
-                    newtable = Table(child)
-                    self.tables.append(newtable)
-                elif child.tag == 'data':
+                #if child.tag == 'stats':
+                #    newtable = Table(child)
+                #    self.tables.append(newtable)
+                if child.tag == 'data':
                     newtable = Table(child[0])
                     self.tables.append(newtable)
                     docroot = child[0]
@@ -48,7 +48,7 @@ class CoverageDocument:
                 newtable = Table(child, CoverageDocument(child, child.get('name')))
                 self.tables.append(newtable)
 
-        print(docroot.tag + " " + name)
+        #print(docroot.tag + " " + name)
 
     def write_file(self):
         """
