@@ -18,12 +18,12 @@ emma2html creates a directory below current directory. The created directory is 
 ## Docker
 If using docker linus and windows docker images can be built.
 
-###Linux (alpine)
+### Linux (alpine)
 docker build -t simmarn/emma2html:alpine -f docker-alpine/Dockerfile .
 
 docker run -it --rm --name emma2html -v "$PWD":/usr/emma2html -u $(id -u ${USER}):$(id -g ${USER}) simmarn/emma2html:alpine -i vstest.coveragexml -s 80:80:80:80
 
-###Windows (nano server)
+### Windows (nano server)
 docker build -t simmarn/emma2html:win -f docker-windows/Dockerfile .
 
 Run using powershell:
