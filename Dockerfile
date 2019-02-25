@@ -1,5 +1,7 @@
 # Packages emma2html python application to docker application for easy usage
-FROM python:3-windowsservercore
+#FROM python:3-windowsservercore
+# using windows nano core image
+FROM stefanscherer/python-windows:nano
 
 MAINTAINER Martin Olausson
 
