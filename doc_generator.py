@@ -1,5 +1,7 @@
 import datetime
+import os, sys
 from coverage import Coverage
+
 
 class DocGenerator:
     """
@@ -12,11 +14,15 @@ class DocGenerator:
         """
         self.filename = filename
 
-        doc_template = open("doc_template.html", "r")
-        self.document = doc_template.read()
-        doc_template.close()
+        # Template files are located in same directory as source code
+        classpath = os.path.dirname(os.path.abspath(sys.modules[DocGenerator.__module__].__file__))
+        doc_template_path = os.path.join(classpath, "doc_template.html")
+        document_template = open(doc_template_path, "r")
+        self.document = document_template.read()
+        document_template.close()
 
-        row_template = open("row_template.html", "r")
+        row_template_path = os.path.join(classpath, "row_template.html")
+        row_template = open(row_template_path, "r")
         self.table_row = row_template.read()
         row_template.close()
 

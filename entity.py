@@ -25,26 +25,6 @@ class Entity:
             if child.tag == 'coverage':
                 self.coverage_list.append(Coverage(child))
 
-    def get_html(self):
-        """
-        Get html for coverage table
-        """
-        content = list()
-
-        content.append("       <p><table style=\"width:600px;table-layout:fixed\">\n")
-        #content.append("       <p><table style=\"width:100%\">\n")
-        content.append("          <tr>\n")
-        content.append("            <th colspan=3>" + self.get_entity_name() + "</th>\n")
-        content.append("          </tr>\n")
-        
-        for row in self.coverage_list:
-            content.append("            " + row.get_html())
-            
-        content.append("          </tr>\n")
-        content.append("       </table></p>\n")
-        
-        return content
-
     def get_entity_name(self):
         """
         Get the name of the entity

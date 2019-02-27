@@ -22,14 +22,6 @@ class Coverage:
         self.percentage = float(values[0][:-1]) # remove '%', convert to float
         self.quotient = values[1]
 
-        
-    def get_html(self):
-        """
-        Get html for coverage row
-        """
-        return "<tr bgcolor=\"" + self.get_bgcolor() + "\"><td>" + self.xmlnode.get('type') + "</td><td>"\
-               + self.format_percentage() + "</td><td>" + self.quotient + "</td></tr>\n"
-
     def format_percentage(self):
         if self.percentage == 100:
             return "100%"
@@ -48,7 +40,7 @@ class Coverage:
         Get coverage
         :return: (string) coverage information
         """
-        return self.xmlnode.get('value')
+        return self.format_percentage() + " " + self.quotient
 
     def get_coverage_type(self):
         """
