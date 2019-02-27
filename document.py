@@ -1,7 +1,9 @@
 import datetime
 import os
 
-from table import Table
+from entity import Entity
+from doc_generator import DocGenerator
+from coverage_enum import CoverageType
 
 
 class CoverageDocument:
@@ -23,7 +25,7 @@ class CoverageDocument:
         """
         self.root = root
         self.name = name
-        self.tables = list()
+        self.entities = list()
 
         docroot = root
 
@@ -33,20 +35,19 @@ class CoverageDocument:
                 #    newtable = Table(child)
                 #    self.tables.append(newtable)
                 if child.tag == 'data':
-                    newtable = Table(child[0])
-                    self.tables.append(newtable)
+                    newtable = Entity(child[0])
+                    self.entities.append(newtable)
                     docroot = child[0]
 
         for child in docroot:
-            if (child.tag == 'all') or\
-                (child.tag == 'method'):
-                newtable = Table(child)
-                self.tables.append(newtable)
+            if (child.tag == 'all') or (child.tag == 'method'):
+                newtable = Entity(child)
+                self.entities.append(newtable)
             elif (child.tag == 'package') or\
                     (child.tag == 'srcfile') or\
                     (child.tag == 'class'):
-                newtable = Table(child, CoverageDocument(child, child.get('name')))
-                self.tables.append(newtable)
+                newtable = Entity(child, CoverageDocument(child, child.get('name')))
+                self.entities.append(newtable)
 
         #print(docroot.tag + " " + name)
 
@@ -55,65 +56,23 @@ class CoverageDocument:
         Write html file to disk
         """
         filename = os.path.join(self.filepath, self.name + ".html")
-        
-        content = self.get_content()
-        
-        file = open(filename, 'w')
-        
-        for row in content:
-            file.write(row)
-           
-        file.close()
-        
-    def get_content(self):
-        """
-        Get file content and return as a list of rows 
-        """
-        content = self.get_header()
-        
-        for table in self.tables:
-            content = content + table.get_html()
-        
-        content = content + self.get_footer()
-        
-        return content
-        
-    def get_header(self):
-        """
-        Create html document header
-        """
+
+        file = DocGenerator(filename)
+
         if self.name == "index":
             h1 = "Code Coverage Report"
         else:
             h1 = self.root.tag + " " + self.name
 
-        header = list()
-        header.append("<html>\n")
-        header.append("   <head>\n")
-        header.append("       <title>Code Coverage Report - " + self.root.tag + " " + self.name + "</title>\n")
-        header.append("       <style>\n")
-        header.append("       table, th, td {\n")
-        header.append("         font-size: 95%;\n")
-        header.append("         border: 1px solid black;\n")
-        header.append("         border-collapse: collapse;\n")
-        header.append("         padding: 5px;\n")
-        header.append("         }\n")
-        header.append("       </style>\n")
-        header.append("   </head>\n")
-        header.append("   <body>\n")
-        header.append("        <h1>" + h1 + "</h1>\n")
+        file.set_title("Code Coverage Report - " + self.root.tag + " " + self.name)
+        file.set_header1(h1)
+        file.set_entity_type(self.entities[0].get_entity_type())
 
-        return header
+        for entity in self.entities:
+            class_cov = entity.get_coverage(CoverageType.CLASS)
+            method_cov = entity.get_coverage(CoverageType.METHOD)
+            block_cov = entity.get_coverage(CoverageType.BLOCK)
+            line_cov = entity.get_coverage(CoverageType.LINE)
+            file.add_row(entity.get_entity_name(), class_cov, method_cov, block_cov, line_cov)
 
-    def get_footer(self):
-        """
-        Create html document footer
-        """
-        now = str(datetime.datetime.now()).split('.')[0]
-
-        footer = list()
-        footer.append("       <p><i>Created by emma2html at " + now + "</i></p>\n")
-        footer.append("   </body>\n")
-        footer.append("</html>")
-
-        return footer
+        file.write_document()
