@@ -1,5 +1,5 @@
 import datetime
-
+from coverage import Coverage
 
 class DocGenerator:
     """
@@ -36,32 +36,27 @@ class DocGenerator:
         """
         self.document = self.document.replace("%HEADER1%", header)
 
-    def set_table_type(self, type):
+    def set_entity_type(self, type):
         """
         Set the type of the table
         :param type: (string) type
         """
-        self.document = self.document.replace("%TYPE%", type)
+        self.document = self.document.replace("%ENTITY_TYPE%", type)
 
-    def add_row(self, row_type, class_color, class_coverage, method_color,
-                method_coverage, block_color, block_coverage, line_color, line_coverage):
+    def add_row(self, entity_name, class_c, method_c, block_c, line_c):
         """
         Add a row to table
-        :param row_type: (string) description of row
-        :param class_color: (string) background color of class coverage cell
-        :param class_coverage: (string) class coverage text
-        :param method_color:  (string) background color of method coverage cell
-        :param method_coverage: (string) method coverage text
-        :param block_color: (string) background color of block coverage cell
-        :param block_coverage: (string) block coverage text
-        :param line_color: (string) background color of line coverage cell
-        :param line_coverage:  (string) line coverage text
+        :param entity_name: (string) description of entity or entity name
+        :param class_c: (Coverage) class coverage
+        :param method_c:  (Coverage) method coverage
+        :param block_c: (Coverage) block coverage
+        :param line_c:  (Coverage) line coverage
         """
-        row = self.table_row.replace("%TYPENAME%", row_type)
-        row = row.replace("%CLASS_COLOR%", class_color).replace("%CLASS_COV%", class_coverage)
-        row = row.replace("%METHOD_COLOR%", method_color).replace("%METHOD_COV%", method_coverage)
-        row = row.replace("%BLOCK_COLOR%", block_color).replace("%BLOCK_COV%", block_coverage)
-        row = row.replace("%LINE_COLOR%", line_color).replace("%LINE_COV%", line_coverage)
+        row = self.table_row.replace("%ENTITY%", entity_name)
+        row = row.replace("%CLASS_COLOR%", class_c.get_bgcolor()).replace("%CLASS_COV%", class_c.get_coverage())
+        row = row.replace("%METHOD_COLOR%", method_c.get_bgcolor()).replace("%METHOD_COV%", method_c.get_coverage())
+        row = row.replace("%BLOCK_COLOR%", block_c.get_bgcolor()).replace("%BLOCK_COV%", block_c.get_coverage())
+        row = row.replace("%LINE_COLOR%", line_c.get_bgcolor()).replace("%LINE_COV%", line_c.get_coverage())
 
         self.table = self.table + row
 

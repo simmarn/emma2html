@@ -1,7 +1,9 @@
 import datetime
 import os
 
-from table import Table
+from entity import Entity
+from doc_generator import DocGenerator
+from coverage_enum import CoverageType
 
 
 class CoverageDocument:
@@ -23,7 +25,7 @@ class CoverageDocument:
         """
         self.root = root
         self.name = name
-        self.tables = list()
+        self.entities = list()
 
         docroot = root
 
@@ -33,20 +35,19 @@ class CoverageDocument:
                 #    newtable = Table(child)
                 #    self.tables.append(newtable)
                 if child.tag == 'data':
-                    newtable = Table(child[0])
-                    self.tables.append(newtable)
+                    newtable = Entity(child[0])
+                    self.entities.append(newtable)
                     docroot = child[0]
 
         for child in docroot:
-            if (child.tag == 'all') or\
-                (child.tag == 'method'):
-                newtable = Table(child)
-                self.tables.append(newtable)
+            if (child.tag == 'all') or (child.tag == 'method'):
+                newtable = Entity(child)
+                self.entities.append(newtable)
             elif (child.tag == 'package') or\
                     (child.tag == 'srcfile') or\
                     (child.tag == 'class'):
-                newtable = Table(child, CoverageDocument(child, child.get('name')))
-                self.tables.append(newtable)
+                newtable = Entity(child, CoverageDocument(child, child.get('name')))
+                self.entities.append(newtable)
 
         #print(docroot.tag + " " + name)
 
@@ -55,15 +56,26 @@ class CoverageDocument:
         Write html file to disk
         """
         filename = os.path.join(self.filepath, self.name + ".html")
-        
-        content = self.get_content()
-        
-        file = open(filename, 'w')
-        
-        for row in content:
-            file.write(row)
-           
-        file.close()
+
+        file = DocGenerator(filename)
+
+        if self.name == "index":
+            h1 = "Code Coverage Report"
+        else:
+            h1 = self.root.tag + " " + self.name
+
+        file.set_title("Code Coverage Report - " + self.root.tag + " " + self.name)
+        file.set_header1(h1)
+        file.set_entity_type(self.entities[0].get_entity_type())
+
+        for entity in self.entities:
+            class_cov = entity.get_coverage(CoverageType.CLASS)
+            method_cov = entity.get_coverage(CoverageType.METHOD)
+            block_cov = entity.get_coverage(CoverageType.BLOCK)
+            line_cov = entity.get_coverage(CoverageType.LINE)
+            file.add_row(entity.get_entity_name(), class_cov, method_cov, block_cov, line_cov)
+
+        file.write_document()
         
     def get_content(self):
         """
@@ -71,7 +83,7 @@ class CoverageDocument:
         """
         content = self.get_header()
         
-        for table in self.tables:
+        for table in self.entities:
             content = content + table.get_html()
         
         content = content + self.get_footer()

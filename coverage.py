@@ -1,13 +1,16 @@
 import thresholds
 
-class Row:
+from coverage_enum import CoverageType
+
+
+class Coverage:
     """
-    Parse xml and create html table
+    Contains coverage information
     """
 
     def __init__(self, xmlnode):
         """
-        Constructor. Saves row xml
+        Constructor. Saves coverage xml
 
         Parameters
         ----------
@@ -39,4 +42,26 @@ class Row:
             return "green"
         else:
             return "red"
+
+    def get_coverage(self):
+        """
+        Get coverage
+        :return: (string) coverage information
+        """
+        return self.xmlnode.get('value')
+
+    def get_coverage_type(self):
+        """
+        Get coverage type
+        :return: (CoverageType)
+        """
+        type = self.xmlnode.get('type')
+        if "class" in type:
+            return CoverageType.CLASS
+        elif "method" in type:
+            return CoverageType.METHOD
+        elif "block" in type:
+            return CoverageType.BLOCK
+        elif "line" in type:
+            return CoverageType.LINE
 

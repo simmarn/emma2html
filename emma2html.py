@@ -27,13 +27,13 @@ def main():
         print(err)  # will print something like "option -a not recognized"
         usage()
         sys.exit(2)
-    inputfile = None
+    input_file = None
     for o, a in opts:
         if o in ("-h", "--help"):
             usage()
             sys.exit()
         elif o in ("-i", "--input"):
-            inputfile = a
+            input_file = a
         elif o in ("-s", "--settings"):
             thresholds.set_threshold(a)
         else:
@@ -46,12 +46,12 @@ def main():
         usage()
         sys.exit(2)
 
-    if inputfile is not None:
+    if input_file is not None:
         # Read xml file
-        xmldoc = xml.etree.ElementTree.parse(inputfile)
+        xml_doc = xml.etree.ElementTree.parse(input_file)
 
     # Parse xml file
-    maindoc = CoverageDocument(xmldoc.getroot(), "index")
+    maindoc = CoverageDocument(xml_doc.getroot(), "index")
     
     # create directory
     report_dir = os.path.join(os.getcwd(), maindoc.filepath)
