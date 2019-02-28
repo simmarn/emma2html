@@ -61,7 +61,7 @@ def main():
     # create html docs
     maindoc.write_file()
 
-    print("Created coverage report in " + report_dir)
+    print("Created coverage report in folder CoverageReport")
     
     sys.exit()
 
