@@ -31,10 +31,7 @@ class Entity:
         Get the name of the entity
         :return: (string) entity name
         """
-        if self.xml_node.tag == "all":
-            name = str(self.xml_node.get('name'))
-        else:
-            name = self.xml_node.tag + " " + str(self.xml_node.get('name'))
+        name = str(self.xml_node.get('name'))
 
         # Append web link if there is a sub document
         if self.sub_doc is not None:
