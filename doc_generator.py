@@ -16,15 +16,15 @@ class DocGenerator:
 
         # Template files are located in same directory as source code
         classpath = os.path.dirname(os.path.abspath(sys.modules[DocGenerator.__module__].__file__))
-        doc_template_path = os.path.join(classpath, "doc_template.html")
+        doc_template_path = os.path.join(classpath, "html", "doc_template.html")
         document_template = open(doc_template_path, "r")
         self.document = document_template.read()
         document_template.close()
 
-        row_template_path = os.path.join(classpath, "row_template.html")
-        row_template = open(row_template_path, "r")
-        self.table_row = row_template.read()
-        row_template.close()
+        coverage_template_path = os.path.join(classpath, "html", "coverage_template.html")
+        coverage_template = open(coverage_template_path, "r")
+        self.table_row = coverage_template.read()
+        coverage_template.close()
 
         self.table = ""
 

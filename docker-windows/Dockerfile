@@ -6,6 +6,7 @@ FROM stefanscherer/python-windows:nano
 MAINTAINER Martin Olausson
 
 COPY *.py c:/pyfiles/
+COPY html/* c:/pyfiles/html/
 
 WORKDIR c:\\emma2html
 

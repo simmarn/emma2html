@@ -4,6 +4,7 @@ FROM python:3-alpine
 MAINTAINER Martin Olausson
 
 COPY *.py /pyfiles/
+COPY html/* /pyfiles/html/
 
 WORKDIR /usr/emma2html
 
