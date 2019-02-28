@@ -40,7 +40,8 @@ class Coverage:
         Get coverage
         :return: (string) coverage information
         """
-        return self.format_percentage() + " " + self.quotient
+        cov_info = self.format_percentage() + " " + self.quotient
+        return cov_info
 
     def get_coverage_type(self):
         """

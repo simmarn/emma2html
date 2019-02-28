@@ -53,18 +53,18 @@ def main():
         xml_doc = xml.etree.ElementTree.parse(input_file)
 
     # Parse xml file
-    maindoc = CoverageDocument(xml_doc.getroot(), "index")
-    
+    main_doc = CoverageDocument(xml_doc.getroot(), "index")
+
     # create directory
-    report_dir = os.path.join(os.getcwd(), maindoc.filepath)
+    report_dir = os.path.join(os.getcwd(), main_doc.filepath)
     if not os.path.exists(report_dir):
         os.makedirs(report_dir)
-    
+
     # create html docs
-    maindoc.write_file()
+    main_doc.write_file()
 
     print("Created coverage report in folder CoverageReport")
-    
+
     sys.exit()
 
 

@@ -1,4 +1,3 @@
-import datetime
 import os
 
 from entity import Entity
@@ -25,31 +24,32 @@ class CoverageDocument:
         """
         self.root = root
         self.name = name
+        self.filename = self.name + ".html"
         self.entities = list()
 
-        docroot = root
+        doc_root = root
 
         if root.tag == 'report':
             for child in root:
-                #if child.tag == 'stats':
-                #    newtable = Table(child)
-                #    self.tables.append(newtable)
+                # if child.tag == 'stats':
+                #    new_table = Table(child)
+                #    self.tables.append(new_table)
                 if child.tag == 'data':
-                    newtable = Entity(child[0])
-                    self.entities.append(newtable)
-                    docroot = child[0]
+                    new_table = Entity(child[0])
+                    self.entities.append(new_table)
+                    doc_root = child[0]
 
-        for child in docroot:
+        for child in doc_root:
             if (child.tag == 'all') or (child.tag == 'method'):
-                newtable = Entity(child)
-                self.entities.append(newtable)
+                new_table = Entity(child)
+                self.entities.append(new_table)
             elif (child.tag == 'package') or\
                     (child.tag == 'srcfile') or\
                     (child.tag == 'class'):
-                newtable = Entity(child, CoverageDocument(child, child.get('name')))
-                self.entities.append(newtable)
+                new_table = Entity(child, CoverageDocument(child, child.get('name')))
+                self.entities.append(new_table)
 
-        #print(docroot.tag + " " + name)
+        # print(doc_root.tag + " " + name)
 
     def write_file(self):
         """
@@ -74,5 +74,7 @@ class CoverageDocument:
             block_cov = entity.get_coverage(CoverageType.BLOCK)
             line_cov = entity.get_coverage(CoverageType.LINE)
             file.add_row(entity.get_entity_name(), class_cov, method_cov, block_cov, line_cov)
+            # write entity sub document if it exist
+            entity.write_sub_document()
 
         file.write_document()

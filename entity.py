@@ -6,22 +6,23 @@ class Entity:
     Contains coverage information for one entity (package, srcfile, class,..)
     """
 
-    def __init__(self, xmlnode, outputd=None):
+    def __init__(self, xml_node, sub_doc=None):
         """
         Constructor. Parses xml and creates table rows
 
         Parameters
         ----------
-        xmlnode :   Element
+        xml_node :  Element
                     xml root for entity
-        outputd :   CoverageDocument
-                    subdocument containing detailed coverage information
+        sub_doc :   CoverageDocument
+                    sub document containing detailed coverage information
         """
-        self.xmlnode = xmlnode
-        self.outputd = outputd
+        self.xml_node = xml_node
+        self.sub_doc = sub_doc
+
         self.coverage_list = list()
 
-        for child in xmlnode:
+        for child in xml_node:
             if child.tag == 'coverage':
                 self.coverage_list.append(Coverage(child))
 
@@ -30,20 +31,26 @@ class Entity:
         Get the name of the entity
         :return: (string) entity name
         """
-        if self.xmlnode.tag == "all":
-            return str(self.xmlnode.get('name'))
+        if self.xml_node.tag == "all":
+            name = str(self.xml_node.get('name'))
         else:
-            return self.xmlnode.tag + " " + str(self.xmlnode.get('name'))
+            name = self.xml_node.tag + " " + str(self.xml_node.get('name'))
+
+        # Append web link if there is a sub document
+        if self.sub_doc is not None:
+            name = "<a href=\"" + self.sub_doc.filename + "\">" + name + "</a>"
+
+        return name
 
     def get_entity_type(self):
         """
         Get the type of entity
         :return: (string) type of entity (package, file, class, ...)
         """
-        if self.xmlnode.tag == "all":
+        if self.xml_node.tag == "all":
             return "package"
         else:
-            return self.xmlnode.tag
+            return self.xml_node.tag
 
     def get_coverage(self, coverage_type):
         """
@@ -54,3 +61,10 @@ class Entity:
         for coverage in self.coverage_list:
             if coverage.get_coverage_type() == coverage_type:
                 return coverage
+
+    def write_sub_document(self):
+        """
+        Write sub document to disk
+        """
+        if self.sub_doc is not None:
+            self.sub_doc.write_file()
