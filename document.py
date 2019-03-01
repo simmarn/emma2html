@@ -10,7 +10,7 @@ class CoverageDocument:
     Parse xml and create html page
     """
     filepath = "CoverageReport"
-    
+
     def __init__(self, root, name):
         """
         Constructor. Parses xml and creates tables or sub documents
@@ -24,7 +24,7 @@ class CoverageDocument:
         """
         self.root = root
         self.name = name
-        self.filename = self.name + ".html"
+        self.filename = get_valid_filename(self.name + ".html")
         self.entities = list()
 
         doc_root = root
@@ -55,7 +55,7 @@ class CoverageDocument:
         """
         Write html file to disk
         """
-        filename = os.path.join(self.filepath, self.name + ".html")
+        filename = os.path.join(self.filepath, self.filename)
 
         file = DocGenerator(filename)
 
@@ -78,3 +78,16 @@ class CoverageDocument:
             entity.write_sub_document()
 
         file.write_document()
+
+def get_valid_filename(s):
+    """
+    Return the given string converted to a string that can be used for a clean
+    filename. Remove leading and trailing spaces; convert other spaces to
+    underscores; and remove anything that is not an alphanumeric, dash,
+    underscore, or dot.
+    >>> get_valid_filename("john's portrait in 2004.jpg")
+    'johns_portrait_in_2004.jpg'
+    """
+    import re
+    s = str(s).strip().replace(' ', '_')
+    return re.sub(r'(?u)[^-\w.]', '', s)
