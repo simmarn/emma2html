@@ -1,4 +1,5 @@
 from coverage import Coverage
+from xml.etree.ElementTree import Element
 
 
 class Entity:
@@ -6,7 +7,7 @@ class Entity:
     Contains coverage information for one entity (package, srcfile, class,..)
     """
 
-    def __init__(self, xml_node, sub_doc=None):
+    def __init__(self, xml_node: Element, sub_doc=None):
         """
         Constructor. Parses xml and creates table rows
 
@@ -26,6 +27,7 @@ class Entity:
             if child.tag == 'coverage':
                 self.coverage_list.append(Coverage(child))
 
+    @property
     def get_entity_name(self):
         """
         Get the name of the entity
@@ -35,10 +37,11 @@ class Entity:
 
         # Append web link if there is a sub document
         if self.sub_doc is not None:
-            name = "<a href=\"" + self.sub_doc.filename + "\">" + name + "</a>"
+            name = "<a href=\"" + self.sub_doc.get_filename + "\">" + name + "</a>"
 
         return name
 
+    @property
     def get_entity_type(self):
         """
         Get the type of entity
@@ -56,7 +59,7 @@ class Entity:
         :return: (Coverage)
         """
         for coverage in self.coverage_list:
-            if coverage.get_coverage_type() == coverage_type:
+            if coverage.get_coverage_type == coverage_type:
                 return coverage
 
     def write_sub_document(self):
