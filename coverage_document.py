@@ -1,4 +1,5 @@
 import os
+from xml.etree.ElementTree import Element
 
 from entity import Entity
 from doc_generator import DocGenerator
@@ -9,9 +10,9 @@ class CoverageDocument:
     """
     Parse xml and create html page
     """
-    filepath = "CoverageReport"
+    file_path: str = "CoverageReport"
 
-    def __init__(self, root, name):
+    def __init__(self, root: Element, name: str):
         """
         Constructor. Parses xml and creates tables or sub documents
 
@@ -24,7 +25,6 @@ class CoverageDocument:
         """
         self.root = root
         self.name = name
-        self.filename = get_valid_filename(self.name + ".html")
         self.entities = list()
 
         doc_root = root
@@ -55,9 +55,9 @@ class CoverageDocument:
         """
         Write html file to disk
         """
-        filename = os.path.join(self.filepath, self.filename)
+        abs_filename = os.path.join(self.file_path, self.get_filename)
 
-        file = DocGenerator(filename)
+        file = DocGenerator(abs_filename)
 
         if self.name == "index":
             h1 = "Code Coverage Report"
@@ -66,20 +66,32 @@ class CoverageDocument:
 
         file.set_title("Code Coverage Report - " + self.root.tag + " " + self.name)
         file.set_header1(h1)
-        file.set_entity_type(self.entities[0].get_entity_type())
+        file.set_entity_type(self.entities[0].get_entity_type)
 
         for entity in self.entities:
             class_cov = entity.get_coverage(CoverageType.CLASS)
             method_cov = entity.get_coverage(CoverageType.METHOD)
             block_cov = entity.get_coverage(CoverageType.BLOCK)
             line_cov = entity.get_coverage(CoverageType.LINE)
-            file.add_row(entity.get_entity_name(), class_cov, method_cov, block_cov, line_cov)
+            file.add_row(entity.get_entity_name, class_cov, method_cov, block_cov, line_cov)
             # write entity sub document if it exist
             entity.write_sub_document()
 
         file.write_document()
 
-def get_valid_filename(s):
+    @property
+    def get_filename(self):
+        """
+        Get filename for CoverageDocument
+        :return:(str)  filename, for example "index.html" or "s_class_MyClass.html"
+        """
+        if self.name == "index":
+            return "index.html"
+        else:
+            return get_valid_filename("s_" + self.root.tag + "_" + self.name + ".html")
+
+
+def get_valid_filename(s: str) -> str:
     """
     Return the given string converted to a string that can be used for a clean
     filename. Remove leading and trailing spaces; convert other spaces to
@@ -87,6 +99,7 @@ def get_valid_filename(s):
     underscore, or dot.
     >>> get_valid_filename("john's portrait in 2004.jpg")
     'johns_portrait_in_2004.jpg'
+    :type s: str
     """
     import re
     s = str(s).strip().replace(' ', '_')

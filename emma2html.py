@@ -6,7 +6,7 @@ import sys
 import xml.etree.ElementTree
 
 import thresholds
-from document import CoverageDocument
+from coverage_document import CoverageDocument
 
 
 """
@@ -56,7 +56,7 @@ def main():
     main_doc = CoverageDocument(xml_doc.getroot(), "index")
 
     # create directory
-    report_dir = os.path.join(os.getcwd(), main_doc.filepath)
+    report_dir = os.path.join(os.getcwd(), main_doc.file_path)
     if not os.path.exists(report_dir):
         os.makedirs(report_dir)
 

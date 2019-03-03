@@ -14,7 +14,7 @@ class DocGenerator:
         """
         self.filename = filename
 
-        # Template files are located in same directory as source code
+        # Template files are located in html directory below source code
         classpath = os.path.dirname(os.path.abspath(sys.modules[DocGenerator.__module__].__file__))
         doc_template_path = os.path.join(classpath, "html", "doc_template.html")
         document_template = open(doc_template_path, "r")
