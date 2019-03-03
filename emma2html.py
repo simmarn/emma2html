@@ -59,6 +59,16 @@ def main():
     report_dir = os.path.join(os.getcwd(), main_doc.file_path)
     if not os.path.exists(report_dir):
         os.makedirs(report_dir)
+    else:
+		# delete all files in directory
+        for the_file in os.listdir(report_dir):
+          file_path = os.path.join(report_dir, the_file)
+          try:
+            if os.path.isfile(file_path):
+              os.unlink(file_path)
+            #elif os.path.isdir(file_path): shutil.rmtree(file_path) # uncomment to remove subdir
+          except Exception as e:
+            print(e)
 
     # create html docs
     main_doc.write_file()
