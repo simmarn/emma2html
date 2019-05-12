@@ -1,5 +1,6 @@
 import datetime
-import os, sys
+import os
+import sys
 from coverage import Coverage
 
 
@@ -27,6 +28,7 @@ class DocGenerator:
         coverage_template.close()
 
         self.table = ""
+
 
     def set_title(self, title):
         """

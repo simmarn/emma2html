@@ -5,6 +5,7 @@ import getopt
 import sys
 import xml.etree.ElementTree
 import shutil
+import glob
 
 import thresholds
 from coverage_document import CoverageDocument
@@ -74,8 +75,12 @@ def main():
     # create html docs
     main_doc.write_file()
 
-    # copy javascript to report directory
-    shutil.copy2('html/sort_table.js', os.path.join(report_dir, 'sort_table.js'))
+    # Copy all javascript files to output dir
+    for file in glob.glob(os.path.join(os.path.dirname
+                                           (os.path.abspath
+                                                (sys.modules[CoverageDocument.__module__].__file__)
+                                            ), "html", r'*.js')):
+        shutil.copy(file, report_dir)
 
     print("Created coverage report in folder CoverageReport")
 
