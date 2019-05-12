@@ -4,6 +4,7 @@ import os
 import getopt
 import sys
 import xml.etree.ElementTree
+import shutil
 
 import thresholds
 from coverage_document import CoverageDocument
@@ -60,18 +61,21 @@ def main():
     if not os.path.exists(report_dir):
         os.makedirs(report_dir)
     else:
-		# delete all files in directory
+        # delete all files in directory
         for the_file in os.listdir(report_dir):
-          file_path = os.path.join(report_dir, the_file)
-          try:
-            if os.path.isfile(file_path):
-              os.unlink(file_path)
-            #elif os.path.isdir(file_path): shutil.rmtree(file_path) # uncomment to remove subdir
-          except Exception as e:
-            print(e)
+            file_path = os.path.join(report_dir, the_file)
+            try:
+                if os.path.isfile(file_path):
+                    os.unlink(file_path)
+                #elif os.path.isdir(file_path): shutil.rmtree(file_path) # uncomment to remove subdir
+            except Exception as e:
+                print(e)
 
     # create html docs
     main_doc.write_file()
+
+    # copy javascript to report directory
+    shutil.copy2('html/sort_table.js', os.path.join(report_dir, 'sort_table.js'))
 
     print("Created coverage report in folder CoverageReport")
 

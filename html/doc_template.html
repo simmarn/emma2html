@@ -3,12 +3,17 @@
 <html>
 <head>
     <title>%DOC_TITLE%</title>
+    <script type="text/javascript" src="sort_table.js"></script>
 </head>
 <body>
     <h1>%HEADER1%</h1>
-    <table border="1" cellpadding="5" cellspacing="0" width="100%">
+    <table id="covTable" border="1" cellpadding="5" cellspacing="0" width="100%">
         <tr>
-            <th>%ENTITY_TYPE%</th><th>Class</th><th>Method</th><!--<th>Block</th>--><th>Line</th>
+            <th>%ENTITY_TYPE%</th>
+            <th onclick="sortTable(1)">Class</th>
+            <th onclick="sortTable(2)">Method</th>
+            <!--<th>Block</th>-->
+            <th onclick="sortTable(3)">Line</th>
         </tr>
 %ROWS%
     </table>
