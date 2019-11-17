@@ -38,8 +38,18 @@ class Coverage:
         Get coverage
         :return: (string) coverage information
         """
-        cov_info = self.format_percentage() + " " + self.quotient
+        cov_info = self.format_percentage()
         return cov_info
+
+    def get_missed(self):
+        """
+        Get missed items
+        :return: (string) missed number of items
+        """
+        quot_list = self.quotient.replace("(", "").replace(")", "").split("/")
+        covered_items = int(quot_list[0])
+        total_items = int(quot_list[1])
+        return str(total_items - covered_items)
 
     @property
     def get_coverage_type(self):

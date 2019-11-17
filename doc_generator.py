@@ -63,11 +63,16 @@ class DocGenerator:
         row = self.table_row.replace("%ENTITY%", entity_name)
         if class_c is not None:
             row = row.replace("%CLASS_COLOR%", class_c.get_bgcolor()).replace("%CLASS_COV%", class_c.get_coverage())
+            row = row.replace("%CLASS_COLOR%", class_c.get_bgcolor()).replace("%CLASS_MISS%", class_c.get_missed())
         else:
             row = row.replace("%CLASS_COLOR%", "").replace("%CLASS_COV%", "-")
+            row = row.replace("%CLASS_COLOR%", "").replace("%CLASS_MISS%", "-")
         row = row.replace("%METHOD_COLOR%", method_c.get_bgcolor()).replace("%METHOD_COV%", method_c.get_coverage())
+        row = row.replace("%METHOD_COLOR%", method_c.get_bgcolor()).replace("%METHOD_MISS%", method_c.get_missed())
         row = row.replace("%BLOCK_COLOR%", block_c.get_bgcolor()).replace("%BLOCK_COV%", block_c.get_coverage())
+        row = row.replace("%BLOCK_COLOR%", block_c.get_bgcolor()).replace("%BLOCK_MISS%", block_c.get_missed())
         row = row.replace("%LINE_COLOR%", line_c.get_bgcolor()).replace("%LINE_COV%", line_c.get_coverage())
+        row = row.replace("%LINE_COLOR%", line_c.get_bgcolor()).replace("%LINE_MISS%", line_c.get_missed())
 
         self.table = self.table + row
 

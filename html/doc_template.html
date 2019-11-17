@@ -9,11 +9,21 @@
     <h1>%HEADER1%</h1>
     <table id="covTable" border="1" cellpadding="5" cellspacing="0" width="100%">
         <tr>
-            <th>%ENTITY_TYPE%</th>
-            <th onclick="sortTable(1)">Class</th>
-            <th onclick="sortTable(2)">Method</th>
-            <!--<th>Block</th>-->
-            <th onclick="sortTable(3)">Line</th>
+            <th rowspan="2">%ENTITY_TYPE%</th>
+            <th colspan="2">Class</th>
+            <th colspan="2">Method</th>
+            <!--<th colspan="2">Block</th>-->
+            <th colspan="2">Line</th>
+        </tr>
+        <tr>
+            <th onclick="sortPercentage(1)">Coverage</th>
+            <th onclick="sortValue(2)">Misses</th>
+            <th onclick="sortPercentage(3)">Coverage</th>
+            <th onclick="sortValue(4)">Misses</th>
+            <!--<th onclick="sortPercentage(1)">Coverage</th>-->
+            <!--<th onclick="sortValue(2)">Misses</th>-->
+            <th onclick="sortPercentage(5)">Coverage</th>
+            <th onclick="sortValue(6)">Misses</th>
         </tr>
 %ROWS%
     </table>
