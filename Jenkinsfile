@@ -1,5 +1,7 @@
 node("windows_10_pro_n_vs2017") {
 
+    checkout scm
+
     def app
 
     stage('Build image') {
