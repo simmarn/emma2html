@@ -8,7 +8,7 @@ node("windows_10_pro_n_vs2017") {
         /* This builds the actual image; synonymous to
          * docker build on the command line */
 
-        app = docker.build("simmarn/emma2html:win -f docker-windows/Dockerfile .")
+        app = docker.build("simmarn/emma2html:win -f docker-windows/Dockerfile")
     }
 
     stage('Push image') {
