@@ -12,14 +12,11 @@ node("windows_10_pro_n_vs2017") {
     }
 
     stage('Push image') {
-        /* Finally, we'll push the image with two tags:
-         * First, the incremental build number from Jenkins
-         * Second, the 'win' tag.
+        /* Finally, we'll push the image
          * Pushing multiple tags is cheap, as all the layers are reused. */
-        /*docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-          *  app.push("win")
-          *}
-          */
-          app.push("win")
+        docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+            app.push()
+            }
+        }
     }
 }
