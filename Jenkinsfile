@@ -16,8 +16,10 @@ node("windows_10_pro_n_vs2017") {
          * First, the incremental build number from Jenkins
          * Second, the 'win' tag.
          * Pushing multiple tags is cheap, as all the layers are reused. */
-        docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-            app.push("win")
+        /*docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+          *  app.push("win")
+          */
+          app.push("win")
         }
     }
 }
