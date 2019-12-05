@@ -15,7 +15,7 @@ node("windows_10_pro_n_vs2017") {
         /* Finally, we'll push the image
          * Pushing multiple tags is cheap, as all the layers are reused. */
         docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-            app.push()
+            docker.image("simmarn/emma2html:win").push()
         }
     }
 }
