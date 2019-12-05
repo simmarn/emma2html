@@ -1,4 +1,5 @@
 import os
+from typing import List
 from xml.etree.ElementTree import Element
 
 from entity import Entity
@@ -10,6 +11,7 @@ class CoverageDocument:
     """
     Parse xml and create html page
     """
+    entities: List[Entity]
     file_path: str = "CoverageReport"
 
     def __init__(self, root: Element, name: str):
@@ -68,6 +70,9 @@ class CoverageDocument:
         file.set_header1(h1)
         file.set_entity_type(self.entities[0].get_entity_type)
 
+        # sort entities descending according to the number of missed lines
+        self.entities.sort(key=get_missed_lines, reverse=True)
+
         for entity in self.entities:
             class_cov = entity.get_coverage(CoverageType.CLASS)
             method_cov = entity.get_coverage(CoverageType.METHOD)
@@ -104,3 +109,10 @@ def get_valid_filename(s: str) -> str:
     import re
     s = str(s).strip().replace(' ', '_')
     return re.sub(r'(?u)[^-\w.]', '', s)
+
+
+def get_missed_lines(entity: Entity) -> int:
+    """
+    Return the number of missed lines for an entity
+    """
+    return entity.get_coverage(CoverageType.LINE).get_missed()
